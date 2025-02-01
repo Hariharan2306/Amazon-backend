@@ -1,0 +1,35 @@
+{
+  "name": "amazon-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "start": "ts-node src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hariharan2306/Amazon-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hariharan2306/Amazon-backend/issues"
+  },
+  "homepage": "https://github.com/Hariharan2306/Amazon-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.9.6"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/lodash": "^4.17.15",
+    "typescript": "^5.7.3"
+  }
+}
