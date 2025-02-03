@@ -32,7 +32,7 @@ export const listProductsService = async (search: string) => {
     ]);
     return data;
   } catch (e) {
-    console.log(`Failed fetching products data ${e}`);
-    throw new Error(`Failed fetching products data ${e}`);
+    console.log(`Failed listing products ${e}`);
+    throw new Error(`Failed listing products ${e}`);
   }
 };

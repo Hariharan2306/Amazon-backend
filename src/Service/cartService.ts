@@ -18,16 +18,16 @@ export const addCartService = async (userName: string, productId: number) => {
       { upsert: true, new: true }
     );
   } catch (e) {
-    console.log(`Failed fetching products data ${e}`);
-    throw new Error(`Failed fetching products data ${e}`);
+    console.log(`Failed adding products to cart ${e}`);
+    throw new Error(`Failed adding products to cart ${e}`);
   }
 };
 export const deleteCartService = async (productId: string) => {
   try {
     await cartModel.deleteOne({ productId });
   } catch (e) {
-    console.log(`Failed fetching products data ${e}`);
-    throw new Error(`Failed fetching products data ${e}`);
+    console.log(`Failed deleting products from cart ${e}`);
+    throw new Error(`Failed deleting products from cart ${e}`);
   }
 };
 
@@ -57,7 +57,7 @@ export const getCartDataService = async (userName: string) => {
     );
     return cartDetails;
   } catch (e) {
-    console.log(`Failed fetching products data ${e}`);
-    throw new Error(`Failed fetching products data ${e}`);
+    console.log(`Failed fetching cart data ${e}`);
+    throw new Error(`Failed fetching cart data ${e}`);
   }
 };

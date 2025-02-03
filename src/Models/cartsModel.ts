@@ -6,14 +6,13 @@ export interface CartData {
 }
 
 interface cartModel extends Document {
-  cartId: number;
   userName: string;
   cartData: CartData[];
 }
 
 const cartSchema: Schema = new Schema(
   {
-    cartId: { type: Number, required: true, unique: true },
+    userName: { type: String, required: true, unique: true },
     cartData: { type: Array },
   },
   { timestamps: true, versionKey: false }
