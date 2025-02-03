@@ -9,8 +9,8 @@ export const getProductsDetailsController = async (
   res: Response
 ) => {
   try {
-    const { productName = "" } = req.params;
-    const data = await getProductsDetailsService(productName);
+    const { productId = "" } = req.params;
+    const data = await getProductsDetailsService(productId);
     res.status(200).send({ flag: "Success", data });
   } catch (e) {
     res.status(500).send({ flag: "Error", error: (e as Error).message });

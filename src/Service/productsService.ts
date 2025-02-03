@@ -1,10 +1,8 @@
 import productsModels from "../Models/productsModels";
 
-export const getProductsDetailsService = async (productName: string) => {
+export const getProductsDetailsService = async (productId: string) => {
   try {
-    const data = await productsModels
-      .findOne({ productName }, { _id: 0 })
-      .lean();
+    const data = await productsModels.findOne({ productId }, { _id: 0 }).lean();
     return data;
   } catch (e) {
     console.log(`Failed fetching products data ${e}`);
@@ -29,8 +27,8 @@ export const listProductsService = async (search: string) => {
     };
     const data = await productsModels.aggregate([
       match,
-      { $project: { _id: 0, productName: 1 } },
-      { $project: { label: "$productName", value: "$productName" } },
+      { $project: { _id: 0, productName: 1, productId: 1 } },
+      { $project: { label: "$productName", value: "$productId" } },
     ]);
     return data;
   } catch (e) {

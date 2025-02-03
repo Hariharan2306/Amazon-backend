@@ -6,7 +6,7 @@ import {
 
 const productsRouter = Router();
 
-productsRouter.get("/data/:productName", getProductsDetailsController);
+productsRouter.get("/data/:productId", getProductsDetailsController);
 productsRouter.get("/productNames/:search", listProductsController);
 
 export default productsRouter;
