@@ -8,7 +8,7 @@ import {
 const cartRouter = Router();
 
 cartRouter.put("/add", addCartController);
-cartRouter.delete("/remove/:productId", deleteCartController);
+cartRouter.delete("/remove", deleteCartController);
 cartRouter.get("/get/:userName", getCartDataController);
 
 export default cartRouter;
