@@ -17,8 +17,10 @@ export const getOrderDataController = async (req: Request, res: Response) => {
 export const placeOrderController = async (req: Request, res: Response) => {
   try {
     const { userName = "" } = req.params;
-    const data = await placeOrderService(userName);
-    res.status(200).send({ flag: "Success", data });
+    await placeOrderService(userName);
+    res
+      .status(200)
+      .send({ flag: "Success", message: "Order Placed Successfully" });
   } catch (e) {
     res.status(500).send({ flag: "Error", error: (e as Error).message });
   }
