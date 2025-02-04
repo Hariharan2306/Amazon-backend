@@ -6,3 +6,7 @@ PORT = 3002
 SERVER_STARTUP = true
 
 I've built these using Mongoose for DB, Routes,TS.
+
+
+
+Please make sure this "SERVER_STARTUP = true" is true only on first start
