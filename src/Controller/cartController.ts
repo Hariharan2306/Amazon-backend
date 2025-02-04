@@ -16,8 +16,8 @@ export const addCartController = async (req: Request, res: Response) => {
 };
 export const deleteCartController = async (req: Request, res: Response) => {
   try {
-    const { productId = "" } = req.params;
-    await deleteCartService(productId);
+    const { productId = "", userName = "" } = req.query;
+    await deleteCartService(Number(productId), userName as string);
     res.status(200).send({ flag: "Success", message: "Deleted Successfully" });
   } catch (e) {
     res.status(500).send({ flag: "Error", error: (e as Error).message });

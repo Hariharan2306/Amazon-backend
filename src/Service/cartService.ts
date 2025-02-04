@@ -1,5 +1,5 @@
+import { isEmpty } from "lodash";
 import cartModel, { CartData } from "../Models/cartsModel";
-import productsModels from "../Models/productsModels";
 
 export const addCartService = async (userName: string, productId: number) => {
   try {
@@ -22,9 +22,24 @@ export const addCartService = async (userName: string, productId: number) => {
     throw new Error(`Failed adding products to cart ${e}`);
   }
 };
-export const deleteCartService = async (productId: string) => {
+export const deleteCartService = async (
+  productId: number,
+  userName: string
+) => {
   try {
-    await cartModel.deleteOne({ productId });
+    const cartDetails = await cartModel.findOne(
+      { userName },
+      { _id: 0, cartData: 1 }
+    );
+
+    const updatedCart = cartDetails?.cartData.map((e) => {
+      return productId === e.productId ? { ...e, quantity: e.quantity - 1 } : e;
+    });
+    const filterCart = updatedCart?.filter(
+      ({ quantity }: CartData) => quantity > 0
+    );
+    if (isEmpty(filterCart)) return await cartModel.deleteOne({ userName });
+    await cartModel.findOneAndUpdate({ userName }, { cartData: filterCart });
   } catch (e) {
     console.log(`Failed deleting products from cart ${e}`);
     throw new Error(`Failed deleting products from cart ${e}`);
@@ -33,28 +48,33 @@ export const deleteCartService = async (productId: string) => {
 
 export const getCartDataService = async (userName: string) => {
   try {
-    const data = await cartModel.findOne({ userName }, { _id: 0, cartData: 1 });
-    if (!data) return [];
-    const { cartData } = data;
-    const cartDetails = await Promise.all(
-      cartData.map(({ quantity, productId }: CartData) => {
-        const productDetails = productsModels
-          .findOne(
-            { productId },
-            {
-              _id: 0,
-              productName: 1,
-              sellingPrice: 1,
-              stockQuantity: 1,
-              stockStatus: 1,
-              productDescription: 1,
-              freeShipping: 1,
-            }
-          )
-          .lean();
-        return { ...productDetails, quantity };
-      })
-    );
+    const cartDetails = await cartModel.aggregate([
+      { $match: { userName } },
+      { $unwind: "$cartData" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "cartData.productId",
+          foreignField: "productId",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" },
+      {
+        $project: {
+          _id: 0,
+          quantity: "$cartData.quantity",
+          productId: "$cartData.productId",
+          productName: "$productDetails.productName",
+          sellingPrice: "$productDetails.sellingPrice",
+          stockQuantity: "$productDetails.stockQuantity",
+          stockStatus: "$productDetails.stockStatus",
+          productDescription: "$productDetails.productDescription",
+          freeShipping: "$productDetails.freeShipping",
+        },
+      },
+    ]);
+
     return cartDetails;
   } catch (e) {
     console.log(`Failed fetching cart data ${e}`);
